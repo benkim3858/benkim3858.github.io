@@ -4,5 +4,4 @@ export default defineNuxtConfig({
     baseURL: '/benkim3858.github.io/' // GitHub 저장소 이름으로 설정
   },
   ssr: false, // GitHub Pages에서는 클라이언트 사이드 렌더링 사용
-  devtools: { enabled: true }
 })
