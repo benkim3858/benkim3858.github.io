@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   app: {
     baseURL: '/benkim3858.github.io/',
-    buildAssetsDir: '_nuxt/'
+    buildAssetsDir: 'assets'
   },
   ssr: false,
   nitro: {
@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   },
   vite: {
     build: {
-      assetsDir: '_nuxt'
+      assetsDir: 'assets'
     }
   }
 })

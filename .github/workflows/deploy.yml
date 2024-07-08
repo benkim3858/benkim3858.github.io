@@ -20,11 +20,13 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Generate static files
+        run: yarn generate
+
+      - name: Prepare for deployment
         run: |
-          yarn generate
-          cp .output/public/404.html .output/public/index.html
           touch .output/public/.nojekyll
-      
+          cp .output/public/404.html .output/public/index.html
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
