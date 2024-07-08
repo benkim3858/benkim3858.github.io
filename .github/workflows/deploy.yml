@@ -22,6 +22,9 @@ jobs:
       - name: Generate static files
         run: yarn generate
 
+      - name: Add .nojekyll file
+        run: touch .output/public/.nojekyll
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
