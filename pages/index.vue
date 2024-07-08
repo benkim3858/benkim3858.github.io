@@ -22,6 +22,7 @@
   
   <script setup>
   // 필요한 경우 여기에 스크립트 추가
+  // 주석
   </script>
   
   <style scoped>
