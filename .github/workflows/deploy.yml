@@ -16,24 +16,11 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.yarn
-          key: ${{ runner.OS }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.OS }}-yarn-
-
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
       - name: Generate static files
         run: yarn generate
-        env:
-          NODE_ENV: production
-
-      - name: Check generated files
-        run: ls -R .output/public
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
