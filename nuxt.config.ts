@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
   app: {
-    baseURL: 'benkim3858.github.io/',
+    baseURL: '/benkim3858.github.io/',
     buildAssetsDir: 'assets'
   },
   ssr: false,
