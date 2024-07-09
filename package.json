@@ -7,14 +7,12 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "deploy": "push-dir --dir=.output/public --branch=gh-pages --cleanup"
+    "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "nuxt": "^3.12.3",
     "vue": "latest"
   },
   "devDependencies": {
-    "push-dir": "^0.4.1"
   }
 }
