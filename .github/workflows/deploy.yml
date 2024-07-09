@@ -26,6 +26,8 @@ jobs:
         run: |
           touch .output/public/.nojekyll
           cp .output/public/404.html .output/public/index.html
+          echo 'application/javascript .js' > .output/public/.htaccess
+          echo 'text/css .css' >> .output/public/.htaccess
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

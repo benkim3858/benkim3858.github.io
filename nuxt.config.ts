@@ -11,5 +11,8 @@ export default defineNuxtConfig({
     build: {
       assetsDir: 'assets'
     }
+  },
+  routeRules: {
+    '/**': { headers: { 'Cache-Control': 'no-store' } }
   }
 })
