@@ -1,18 +1,18 @@
 export default defineNuxtConfig({
   app: {
-    baseURL: '/benkim3858.github.io/',
-    buildAssetsDir: 'assets'
+    baseURL: '/benkim3858.github.io/'
   },
   ssr: false,
   nitro: {
     preset: 'github-pages'
   },
-  vite: {
-    build: {
-      assetsDir: 'assets'
-    }
+  router: {
+    base: '/benkim3858.github.io/'
   },
-  routeRules: {
-    '/**': { headers: { 'Cache-Control': 'no-store' } }
+  experimental: {
+    payloadExtraction: false
+  },
+  generate: {
+    fallback: '404.html'
   }
 })
