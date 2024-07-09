@@ -15,6 +15,7 @@
           <li>Vue.js</li>
           <li>Nuxt 3</li>
           <li>JavaScript</li>
+          <li>test</li>
         </ul>
       </section>
     </div>
