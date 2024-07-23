@@ -1,75 +1,24 @@
-# Nuxt 3 Minimal Starter
+# 김동현의 포트폴리오
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+[![Portfolio](https://img.shields.io/badge/Portfolio-Visit%20Site-blue?style=for-the-badge&logo=github)](https://benkim3858.github.io/)
 
-## Setup
+## 소개
 
-Make sure to install the dependencies:
+이 저장소는 제 개인 포트폴리오 웹사이트의 소스 코드를 담고 있습니다.
 
-```bash
-# npm
-npm install
+## 포트폴리오 웹사이트
 
-# pnpm
-pnpm install
+🌐 [포트폴리오 방문하기](https://benkim3858.github.io/)
 
-# yarn
-yarn install
+## 주요 기능
 
-# bun
-bun install
-```
+- 💼 프로젝트 갤러리
+- 🛠 기술 스택
+- 📄 이력서
+- 📬 연락처 정보
 
-## Development Server
+## 기술 스택
 
-Start the development server on `http://localhost:3000`:
+- [추가 사용된 기술/프레임워크]
 
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## 프로젝트 구조
