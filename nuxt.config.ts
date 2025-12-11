@@ -52,7 +52,7 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        { rel: 'canonical', href: 'https://benkim3858.github.io/' }
+        { rel: 'canonical', href: 'https://evegdev.com/' }
       ]
     }
   },

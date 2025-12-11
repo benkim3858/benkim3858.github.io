@@ -5,25 +5,33 @@ on:
     branches:
       - main
 
+# GitHub Actions 권한 설정 - gh-pages 배포에 필수
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
-          
+
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Generate static files
         run: npm run generate
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .output/public
-          cname: benkim3858.github.io 
+          force_orphan: true
+          cname: evegdev.com
