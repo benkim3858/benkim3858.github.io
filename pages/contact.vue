@@ -52,6 +52,16 @@
 </template>
 
 <script setup>
+// SEO 메타태그 설정
+useSeoMeta({
+  title: 'Contact | Ben Kim - Full Stack Developer',
+  description: 'Get in touch with Ben Kim for web development projects, collaborations, or job opportunities. Available for freelance and full-time positions.',
+  ogTitle: 'Contact Ben Kim | Full Stack Developer',
+  ogDescription: 'Get in touch for web development projects and collaborations.',
+  ogImage: '/logo.png',
+  twitterCard: 'summary_large_image',
+})
+
 const formData = ref({
   name: '',
   email: '',

@@ -4,10 +4,57 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n'
   ],
 
+  // Global CSS - Design System
+  css: [
+    '~/assets/styles/main.scss'
+  ],
+
+  // SSR 활성화 - SEO 최적화 핵심
+  ssr: true,
+
+  // Nitro 설정 - GitHub Pages용 정적 생성
+  nitro: {
+    preset: 'github-pages'
+  },
+
   app: {
     layoutTransition: { name: 'layout', mode: 'out-in' },
     baseURL: '/',
-    buildAssetsDir: 'assets'
+    buildAssetsDir: 'assets',
+
+    // 전역 SEO 메타태그
+    head: {
+      htmlAttrs: {
+        lang: 'en'
+      },
+      title: 'Ben Kim | Full Stack Developer',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'description', content: 'Ben Kim - Full Stack Developer specializing in Web & Mobile Development. Vue.js, React, Node.js, and Cloud Services expert with 40+ projects.' },
+        { name: 'author', content: 'Ben Kim' },
+        { name: 'robots', content: 'index, follow' },
+
+        // Open Graph
+        { property: 'og:type', content: 'website' },
+        { property: 'og:site_name', content: 'Ben Kim Portfolio' },
+        { property: 'og:title', content: 'Ben Kim | Full Stack Developer' },
+        { property: 'og:description', content: 'Full Stack Developer specializing in Web & Mobile Development. Vue.js, React, Node.js, and Cloud Services expert.' },
+        { property: 'og:image', content: '/logo.png' },
+        { property: 'og:locale', content: 'en_US' },
+        { property: 'og:locale:alternate', content: 'ko_KR' },
+
+        // Twitter Card
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: 'Ben Kim | Full Stack Developer' },
+        { name: 'twitter:description', content: 'Full Stack Developer specializing in Web & Mobile Development.' },
+        { name: 'twitter:image', content: '/logo.png' }
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'canonical', href: 'https://benkim3858.github.io/' }
+      ]
+    }
   },
 
   i18n: {
@@ -35,6 +82,5 @@ export default defineNuxtConfig({
   },
 
   devtools: { enabled: true },
-  compatibilityDate: '2025-01-02',
-  ssr: false
+  compatibilityDate: '2025-01-02'
 })

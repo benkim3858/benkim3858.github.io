@@ -1,0 +1,61 @@
+// ===========================================
+// Design System - Button Components
+// ===========================================
+// Unified button styles from main.css and _components.scss
+// Preserves all existing class names for backward compatibility
+
+.btn {
+  display: inline-block;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius-sm);
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition-normal);
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+
+  // Shine effect from _components.scss
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    transition: 0.5s;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
+}
+
+.btn-primary {
+  background: var(--accent-color);
+  color: var(--bg-color);
+  border: none;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(100, 255, 218, 0.2);
+  }
+}
+
+.btn-secondary {
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
+  background: transparent;
+
+  &:hover {
+    background: rgba(100, 255, 218, 0.1);
+    transform: translateY(-2px);
+  }
+}

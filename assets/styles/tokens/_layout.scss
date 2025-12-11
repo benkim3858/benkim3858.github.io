@@ -1,0 +1,119 @@
+// ===========================================
+// Design System - Layout Tokens
+// ===========================================
+// Preserves all existing CSS variable names and values
+// from main.css for backward compatibility
+
+:root {
+  // -------------------------
+  // Transitions (from main.css)
+  // -------------------------
+  --transition-normal: all 0.3s ease;
+
+  // -------------------------
+  // Border Radius (from main.css)
+  // -------------------------
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 15px;
+
+  // -------------------------
+  // Layout (from main.css)
+  // -------------------------
+  --container-width: 1200px;
+  --header-height: 80px;
+
+  // -------------------------
+  // Breakpoints (from main.css)
+  // Note: CSS variables cannot be used in media queries
+  // These are for reference and JS usage
+  // -------------------------
+  --mobile: 480px;
+  --tablet: 768px;
+  --laptop: 1024px;
+  --desktop: 1200px;
+
+  // -------------------------
+  // Container widths (from main.css)
+  // -------------------------
+  --container-sm: 100%;
+  --container-md: 720px;
+  --container-lg: 960px;
+  --container-xl: 1140px;
+
+  // -------------------------
+  // Z-index (from _variables.scss)
+  // -------------------------
+  --z-background: -1;
+  --z-default: 1;
+  --z-overlay: 10;
+  --z-modal: 20;
+}
+
+// ===========================================
+// SCSS Variables for media queries
+// ===========================================
+$breakpoint-mobile: 480px;
+$breakpoint-tablet: 768px;
+$breakpoint-laptop: 1024px;
+$breakpoint-desktop: 1200px;
+
+// Container widths
+$container-width: 1200px;
+$container-sm: 100%;
+$container-md: 720px;
+$container-lg: 960px;
+$container-xl: 1140px;
+
+// Header
+$header-height: 80px;
+
+// Border radius
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 15px;
+
+// Z-index scale
+$z-background: -1;
+$z-default: 1;
+$z-overlay: 10;
+$z-modal: 20;
+
+// ===========================================
+// Responsive Mixins
+// ===========================================
+@mixin mobile {
+  @media (max-width: #{$breakpoint-mobile}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: #{$breakpoint-tablet}) {
+    @content;
+  }
+}
+
+@mixin tablet-up {
+  @media (min-width: #{$breakpoint-mobile + 1}) {
+    @content;
+  }
+}
+
+@mixin laptop {
+  @media (max-width: #{$breakpoint-laptop}) {
+    @content;
+  }
+}
+
+@mixin laptop-up {
+  @media (min-width: #{$breakpoint-tablet + 1}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$breakpoint-laptop + 1}) {
+    @content;
+  }
+}

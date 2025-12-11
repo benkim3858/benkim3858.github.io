@@ -1,0 +1,22 @@
+// ===========================================
+// Design System - Global Styles
+// ===========================================
+// Preserves exact styles from main.css
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+// Typography
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-color-light);
+  margin-bottom: var(--space-md);
+}
+
+.section-title {
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--space-xl);
+}

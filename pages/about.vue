@@ -26,6 +26,16 @@
 </template>
 
 <script setup>
+// SEO 메타태그 설정
+useSeoMeta({
+  title: 'About Me | Ben Kim - Full Stack Developer',
+  description: 'Learn about Ben Kim, a passionate Full Stack Developer with expertise in Vue.js, React, Node.js, Python, and Cloud Services. Years of experience building modern web applications.',
+  ogTitle: 'About Ben Kim | Full Stack Developer',
+  ogDescription: 'Passionate Full Stack Developer with expertise in modern web technologies.',
+  ogImage: '/logo.png',
+  twitterCard: 'summary_large_image',
+})
+
 const aboutText = ref(`I'm a passionate full-stack developer with a keen interest in building modern web applications. 
 With several years of experience in the industry, I've worked on various projects ranging from small business websites 
 to large-scale enterprise applications.`);

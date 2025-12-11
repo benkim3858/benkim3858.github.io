@@ -1,0 +1,11 @@
+// ===========================================
+// Design System - Card Components
+// ===========================================
+// Preserves card styles from main.css
+
+.card {
+  background: var(--bg-color-light);
+  border-radius: var(--border-radius-md);
+  padding: var(--space-md);
+  transition: var(--transition-normal);
+}

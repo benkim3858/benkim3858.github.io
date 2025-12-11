@@ -190,6 +190,20 @@
 <script setup>
 import InteractiveBackground from '~/components/InteractiveBackground.vue';
 
+// SEO 메타태그 설정
+useSeoMeta({
+  title: 'Ben Kim | Full Stack Developer - Portfolio',
+  description: 'Ben Kim - Full Stack Developer specializing in Web & Mobile Development. Expert in Vue.js, React, Node.js, Python, and Cloud Services with 40+ successful projects.',
+  ogTitle: 'Ben Kim | Full Stack Developer',
+  ogDescription: 'Full Stack Developer specializing in Web & Mobile Development. Vue.js, React, Node.js expert with 40+ projects.',
+  ogImage: '/logo.png',
+  ogType: 'website',
+  twitterCard: 'summary_large_image',
+  twitterTitle: 'Ben Kim | Full Stack Developer',
+  twitterDescription: 'Full Stack Developer specializing in Web & Mobile Development.',
+  twitterImage: '/logo.png',
+})
+
 const texts = {
   en: [
     'Full Stack Developer',

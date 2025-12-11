@@ -1,0 +1,37 @@
+// ===========================================
+// Design System - Spacing Tokens
+// ===========================================
+// Preserves all existing CSS variable names and values
+// from main.css for backward compatibility
+
+:root {
+  // -------------------------
+  // Spacing Scale (from main.css)
+  // -------------------------
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-xxl: 4rem;
+}
+
+// ===========================================
+// SCSS Variables for internal use
+// ===========================================
+$space-xs: 0.5rem;
+$space-sm: 1rem;
+$space-md: 1.5rem;
+$space-lg: 2rem;
+$space-xl: 3rem;
+$space-xxl: 4rem;
+
+// Spacing map for generating utility classes
+$spacing-map: (
+  'xs': $space-xs,
+  'sm': $space-sm,
+  'md': $space-md,
+  'lg': $space-lg,
+  'xl': $space-xl,
+  'xxl': $space-xxl
+);

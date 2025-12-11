@@ -1,14 +1,49 @@
-// Variables
-@import './variables';
+// ===========================================
+// Design System - Main Entry Point
+// ===========================================
+// Unified styling architecture for the portfolio
+// All imports are ordered for proper cascade
 
-// Base styles
-@import './base';
+// -------------------------
+// 1. Design Tokens
+// CSS variables and SCSS variables
+// -------------------------
+@use './tokens/colors';
+@use './tokens/spacing';
+@use './tokens/typography';
+@use './tokens/layout';
 
-// Components
-@import './components';
+// -------------------------
+// 2. Base Styles
+// Reset and global defaults
+// -------------------------
+@use './base/reset';
+@use './base/global';
 
-// Animations
-@import './animations';
+// -------------------------
+// 3. Components
+// Reusable UI components
+// -------------------------
+@use './components/buttons';
+@use './components/cards';
+@use './components/forms';
+@use './components/sections';
 
-// Utilities
-@import './utilities'; 
+// -------------------------
+// 4. Utilities
+// Helper classes and animations
+// -------------------------
+@use './utilities/layout' as layout-utils;
+@use './utilities/spacing' as spacing-utils;
+@use './utilities/animations';
+@use './utilities/responsive';
+
+// -------------------------
+// Legacy Support
+// Keep old partial files for components
+// that may still import them directly
+// -------------------------
+// @import './variables';  // Now in tokens/
+// @import './base';       // Now in base/
+// @import './components'; // Now in components/
+// @import './animations'; // Now in utilities/animations

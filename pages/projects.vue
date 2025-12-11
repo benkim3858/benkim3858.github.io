@@ -29,6 +29,16 @@
 </template>
 
 <script setup>
+// SEO 메타태그 설정
+useSeoMeta({
+  title: 'Projects | Ben Kim - Full Stack Developer Portfolio',
+  description: 'Explore my portfolio of web and mobile development projects. Full-stack applications built with Vue.js, React, Node.js, and modern cloud technologies.',
+  ogTitle: 'Projects | Ben Kim Portfolio',
+  ogDescription: 'Portfolio of web and mobile development projects built with modern technologies.',
+  ogImage: '/logo.png',
+  twitterCard: 'summary_large_image',
+})
+
 const projects = ref([
   {
     id: 1,

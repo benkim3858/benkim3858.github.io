@@ -4,6 +4,4 @@
   </NuxtLayout>
 </template>
 
-<style>
-@import '@/assets/css/main.css';
-</style>
+<!-- Global styles now loaded via nuxt.config.ts css option -->

@@ -1,0 +1,68 @@
+// ===========================================
+// Design System - Layout Utilities
+// ===========================================
+// Preserves all grid and layout classes from main.css
+
+// Grid System
+.grid {
+  display: grid;
+  gap: var(--space-md);
+  width: 100%;
+}
+
+.grid-1 {
+  grid-template-columns: 1fr;
+}
+
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+// Responsive Grid - Mobile first
+@media (max-width: 768px) {
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Responsive Grid with suffix
+@media (min-width: 481px) {
+  .grid-2-sm { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 769px) {
+  .grid-2-md { grid-template-columns: repeat(2, 1fr); }
+  .grid-3-md { grid-template-columns: repeat(3, 1fr); }
+  .grid-4-md { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (min-width: 1025px) {
+  .grid-4-lg { grid-template-columns: repeat(4, 1fr); }
+  .grid-5-lg { grid-template-columns: repeat(5, 1fr); }
+}
+
+// Visibility utilities
+.hide-sm { display: none !important; }
+@media (min-width: 481px) {
+  .show-sm { display: none !important; }
+  .hide-sm { display: block !important; }
+}
+
+.hide-md { display: none !important; }
+@media (min-width: 769px) {
+  .show-md { display: none !important; }
+  .hide-md { display: block !important; }
+}
+
+// Text alignment
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+// Text colors
+.text-accent { color: var(--accent-color); }

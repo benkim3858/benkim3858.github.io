@@ -1,0 +1,23 @@
+// ===========================================
+// Design System - Form Components
+// ===========================================
+// Preserves form styles from main.css
+
+.form-group {
+  margin-bottom: var(--space-md);
+}
+
+.form-control {
+  width: 100%;
+  padding: var(--space-sm);
+  background: var(--bg-color-light);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  color: var(--text-color-light);
+  transition: var(--transition-normal);
+
+  &:focus {
+    outline: none;
+    border-color: var(--accent-color);
+  }
+}

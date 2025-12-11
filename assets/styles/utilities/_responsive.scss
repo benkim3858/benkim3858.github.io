@@ -1,0 +1,22 @@
+// ===========================================
+// Design System - Responsive Utilities
+// ===========================================
+// Responsive CSS variable overrides from main.css
+
+@media (max-width: 480px) {
+  :root {
+    --space-xxl: 1.5rem;
+    --space-xl: 2rem;
+    --font-size-xxl: 2rem;
+    --font-size-xl: 1.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --space-xxl: 2rem;
+    --space-xl: 2.5rem;
+    --font-size-xxl: 2.5rem;
+    --font-size-xl: 2rem;
+  }
+}
