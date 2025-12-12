@@ -7,12 +7,16 @@
       <div class="hero-content">
         <div class="text-content">
           <h1 class="animate-text">
-            Hello, I'm <span class="highlight">Ben</span>
+            <span class="highlight">EVERGREEN DEV</span>
           </h1>
+          <p class="hero-slogan">
+            언제나 푸른 상록수처럼,<br>
+            클라이언트의 비즈니스를 지속 가능하게 만드는 기술 파트너
+          </p>
           <p class="typewriter">{{ currentText }}</p>
           <div class="cta-buttons">
-            <a href="#projects" class="btn btn-primary">View My Work</a>
-            <a href="#contact" class="btn btn-secondary">Contact Me</a>
+            <a href="#about" class="btn btn-primary">서비스 소개</a>
+            <a href="#contact" class="btn btn-secondary">프로젝트 문의</a>
           </div>
         </div>
       </div>
@@ -27,14 +31,15 @@
     <!-- Expertise Section -->
     <section id="expertise" class="section expertise-section">
       <div class="container">
-        <h2 class="section-title text-center">My Expertise</h2>
+        <h2 class="section-title text-center">Our Services</h2>
+        <p class="section-subtitle text-center">웹, 모바일, 크로스플랫폼 개발을 통해 비즈니스의 새로운 가능성을 열어갑니다.</p>
         <div class="expertise-grid">
           <div class="expertise-card">
             <div class="expertise-icon">
               <Icon name="mdi:web" />
             </div>
             <h3>Web Development</h3>
-            <p>Building responsive and performant web applications using modern frameworks and best practices.</p>
+            <p>최신 프레임워크와 웹 표준을 준수하여 성능이 뛰어나고 반응형인 웹 애플리케이션을 구축합니다.</p>
             <ul class="expertise-list">
               <li>Vue.js / Nuxt.js</li>
               <li>React / Next.js</li>
@@ -47,8 +52,8 @@
             <div class="expertise-icon">
               <Icon name="mdi:cellphone" />
             </div>
-            <h3>Mobile Development</h3>
-            <p>Creating cross-platform mobile applications with native performance and excellent user experience.</p>
+            <h3>Mobile App</h3>
+            <p>네이티브 성능에 준하는 크로스플랫폼 기술로 효율적인 모바일 앱 서비스를 제공합니다.</p>
             <ul class="expertise-list">
               <li>React Native</li>
               <li>Flutter</li>
@@ -61,27 +66,27 @@
             <div class="expertise-icon">
               <Icon name="mdi:database" />
             </div>
-            <h3>Backend Development</h3>
-            <p>Creating robust and scalable server-side solutions with modern technologies.</p>
+            <h3>Backend System</h3>
+            <p>안정적이고 확장 가능한 서버 아키텍처를 설계하고 구축합니다.</p>
             <ul class="expertise-list">
               <li>Node.js / Express</li>
               <li>Python / Django</li>
-              <li>RESTful APIs</li>
-              <li>Database Design</li>
+              <li>RESTful API / GraphQL</li>
+              <li>High Availability</li>
             </ul>
           </div>
 
           <div class="expertise-card">
             <div class="expertise-icon">
-              <Icon name="mdi:cloud" />
+              <Icon name="mdi:shield-check" />
             </div>
-            <h3>Cloud Services</h3>
-            <p>Deploying and managing applications using cloud infrastructure.</p>
+            <h3>System Stability</h3>
+            <p>지속 가능한 개발 방식과 안정적인 유지보수로 귀사의 디지털 자산을 관리합니다.</p>
             <ul class="expertise-list">
-              <li>AWS / Azure</li>
-              <li>Docker / Kubernetes</li>
-              <li>CI/CD Pipelines</li>
-              <li>Cloud Architecture</li>
+              <li>Security Audit</li>
+              <li>Performance Tuning</li>
+              <li>24/7 Monitoring</li>
+              <li>Legacy Migration</li>
             </ul>
           </div>
         </div>
@@ -91,7 +96,7 @@
     <!-- Projects Section -->
     <section id="projects" class="section projects-section">
       <div class="container">
-        <h2 class="section-title text-center">Featured Projects</h2>
+        <h2 class="section-title text-center">Featured Works</h2>
         <div class="grid grid-1 grid-2-sm grid-3-md">
           <article v-for="project in projects" 
                    :key="project.id" 
@@ -124,10 +129,10 @@
       <div class="container">
         <div class="about-content grid grid-1 grid-2-md">
           <div class="about-text">
-            <h2 class="section-title">About Me</h2>
+            <h2 class="section-title">Why Evergreen?</h2>
             <p>{{ aboutText }}</p>
             <div class="skills-container">
-              <h3>Skills & Technologies</h3>
+              <h3>Core Competencies</h3>
               <div class="skills-grid grid grid-2-sm grid-3-md">
                 <div v-for="(skill, category) in skills" 
                      :key="category" 
@@ -141,7 +146,10 @@
             </div>
           </div>
           <div class="about-image">
-            <img src="" alt="Profile picture">
+             <!-- Placeholder for company image or abstract graphic -->
+            <div class="placeholder-image">
+                <Icon name="mdi:forest" size="10rem" color="#64ffda" />
+            </div>
           </div>
         </div>
       </div>
@@ -154,21 +162,14 @@
         <div class="contact-container grid grid-1 grid-2-md">
           <div class="contact-info">
             <p>{{ contactText }}</p>
-            <div class="social-links">
-              <a href="https://github.com/yourusername" target="_blank">
-                <Icon name="mdi:github" />
-              </a>
-              <a href="https://linkedin.com/in/yourusername" target="_blank">
-                <Icon name="mdi:linkedin" />
-              </a>
-              <a href="https://twitter.com/yourusername" target="_blank">
-                <Icon name="mdi:twitter" />
-              </a>
+            <div class="contact-details">
+                <p><Icon name="mdi:email" /> contact@evergreen.dev</p>
+                <p><Icon name="mdi:map-marker" /> Seoul, Korea</p>
             </div>
           </div>
           <form class="contact-form" @submit.prevent="handleSubmit">
             <div class="form-group">
-              <label for="name">Name</label>
+              <label for="name">Name / Company</label>
               <input type="text" id="name" v-model="formData.name" required>
             </div>
             <div class="form-group">
@@ -190,57 +191,71 @@
 <script setup>
 // SEO 메타태그 설정
 useSeoMeta({
-  title: 'Ben Kim | Full Stack Developer - Portfolio',
-  description: 'Ben Kim - Full Stack Developer specializing in Web & Mobile Development. Expert in Vue.js, React, Node.js, Python, and Cloud Services with 40+ successful projects.',
-  ogTitle: 'Ben Kim | Full Stack Developer',
-  ogDescription: 'Full Stack Developer specializing in Web & Mobile Development. Vue.js, React, Node.js expert with 40+ projects.',
+  title: 'Evergreen Dev | Sustainable Tech Partner',
+  description: 'Evergreen Dev - 언제나 푸른 상록수처럼 변함없는 가치를 제공하는 웹/모바일 개발 전문 파트너입니다. 지속 가능한 성장을 위한 최적의 IT 솔루션을 제안합니다.',
+  ogTitle: 'Evergreen Dev | Sustainable Tech Partner',
+  ogDescription: '언제나 푸른 상록수처럼, 귀사의 비즈니스를 지속 가능하게 만드는 최고의 기술 파트너.',
   ogImage: '/logo.png',
   ogType: 'website',
   twitterCard: 'summary_large_image',
-  twitterTitle: 'Ben Kim | Full Stack Developer',
-  twitterDescription: 'Full Stack Developer specializing in Web & Mobile Development.',
+  twitterTitle: 'Evergreen Dev',
+  twitterDescription: 'Sustainable Tech Partner for your business.',
   twitterImage: '/logo.png',
 })
 
 const texts = {
   en: [
-    'Full Stack Developer',
-    'Web & Mobile Developer',
-    '40+ Projects',
+    'Sustainable Tech Partner',
+    'Web & Mobile Solutions',
+    'Cross-Platform Expert',
+    'System Maintenance'
   ],
   ko: [
-    '풀스택 개발자',
-    '디지털 혁신 구현',
-    '창의적 문제 해결',
-    '최적화된 솔루션 제공'
+    '지속 가능한 기술 파트너',
+    '웹 & 모바일 솔루션',
+    '크로스 플랫폼 개발',
+    '시스템 유지보수 및 고도화'
   ]
 };
-const currentText = ref(texts.en[0]);
+// Use Korean as default for now or stick to English for the typewriter if preferred. 
+// Given the prompt, let's mix or use English for "Tech" vibe but the slogan is Korean.
+// Let's use English for the typewriter to match the likely global/modern tech aesthetic, or ko if desired.
+// I will keep it pointing to texts.en for "Global" feel, or switch to ko. Let's switch to ko as the prompt text was significantly Korean.
+const currentText = ref(texts.ko[0]); 
 let currentIndex = 0;
 
 // Data
-const aboutText = ref(`I'm a passionate full-stack developer with a keen interest in building modern web applications.`);
-const contactText = ref(`I'm currently open for new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!`);
+const aboutText = ref(`변화하는 기술 환경 속에서도 변함없는 가치를 제공합니다. 저희 Evergreen Dev는 단순한 개발사가 아닌, 고객의 비즈니스 성장을 함께 고민하는 파트너입니다. 안정적인 시스템 구축과 효율적인 유지보수를 통해 귀사의 디지털 자산을 안전하게 지켜드립니다.`);
+const contactText = ref(`새로운 프로젝트 논의나 기술 상담이 필요하시다면 언제든 연락주세요. 귀사의 비즈니스에 최적화된 솔루션을 제안해 드립니다.`);
 const formData = ref({
   name: '',
   email: '',
   message: ''
 });
 const skills = ref({
-  'Frontend': ['Vue.js', 'React', 'TypeScript', 'HTML/CSS'],
-  'Backend': ['Node.js', 'Python', 'SQL', 'MongoDB'],
-  'Tools': ['Git', 'Docker', 'AWS', 'Firebase']
+  'Development': ['Vue.js / Nuxt', 'React / Next.js', 'React Native / Flutter', 'Node.js / Python'],
+  'Infrastructure': ['AWS / Azure', 'Docker / K8s', 'CI/CD Pipelines', 'Security'],
+  'Process': ['Agile / Scrum', 'Code Review', 'Documentation', 'Maintenance']
 });
 const projects = ref([
   {
     id: 1,
-    title: "Project One",
-    description: "A full-stack web application built with Vue.js and Node.js",
+    title: "E-Commerce Platform",
+    description: "대규모 트래픽을 처리하는 고성능 커머스 솔루션 구축",
     image: "/images/project1.jpg",
-    github: "https://github.com/yourusername/project1",
-    demo: "https://project1.demo",
-    technologies: ["Vue.js", "Node.js", "MongoDB"]
+    github: "#",
+    demo: "#",
+    technologies: ["Nuxt.js", "NestJS", "AWS"]
   },
+  {
+    id: 2,
+    title: "Corporate Dashboard",
+    description: "실시간 데이터 시각화 및 관리자 어드민 시스템",
+    image: "/images/project2.jpg",
+    github: "#",
+    demo: "#",
+    technologies: ["React", "TypeScript", "D3.js"]
+  }
   // Add more projects...
 ]);
 
@@ -351,7 +366,7 @@ onMounted(() => {
   font-size: clamp(2.5rem, 5vw, 4.5rem);
   margin-bottom: var(--space-md);
   line-height: 1.2;
-  background: linear-gradient(to right, #fff, #4af3ff);
+  background: linear-gradient(to right, #64ffda, #4af3ff);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -390,7 +405,7 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  backdrop-filter: blur(4px);
+  /* backdrop-filter: blur(1px); */
   z-index: -1;
 }
 
