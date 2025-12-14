@@ -189,6 +189,19 @@
 </template>
 
 <script setup>
+// 섹션 스크롤 관련 상태
+const sectionIds = ['home', 'expertise', 'projects', 'about', 'contact'];
+const currentSectionIndex = ref(0);
+const isScrolling = ref(false);
+const mainContainer = ref(null);
+
+// 스크롤 민감도 설정 (둔감 설정)
+const SCROLL_THRESHOLD = 350;      // 누적 임계값 (높을수록 덜 민감)
+const SCROLL_RESET_DELAY = 400;    // 스크롤 멈추면 누적값 리셋 (ms)
+const TOUCH_SWIPE_THRESHOLD = 200;  // 터치 스와이프 임계값 (px)
+let accumulatedDelta = 0;
+let scrollResetTimer = null;
+
 // SEO 메타태그 설정
 useSeoMeta({
   title: 'Evergreen Dev | Sustainable Tech Partner',
@@ -265,23 +278,195 @@ const handleSubmit = async () => {
   console.log('Form submitted:', formData.value);
 };
 
+// 섹션으로 스크롤하는 함수
+const scrollToSection = (index) => {
+  if (index < 0 || index >= sectionIds.length) return;
+
+  const targetSection = document.getElementById(sectionIds[index]);
+  if (targetSection && mainContainer.value) {
+    isScrolling.value = true;
+    currentSectionIndex.value = index;
+
+    mainContainer.value.scrollTo({
+      top: targetSection.offsetTop,
+      behavior: 'smooth'
+    });
+
+    // 스크롤 애니메이션 완료 후 잠금 해제
+    setTimeout(() => {
+      isScrolling.value = false;
+    }, 800);
+  }
+};
+
+// 스크롤 가능한 부모 요소 찾기
+const findScrollableParent = (element) => {
+  while (element && element !== mainContainer.value) {
+    const style = window.getComputedStyle(element);
+    const overflowY = style.overflowY;
+    const isScrollable = overflowY === 'auto' || overflowY === 'scroll';
+    const hasScrollableContent = element.scrollHeight > element.clientHeight;
+
+    if (isScrollable && hasScrollableContent) {
+      return element;
+    }
+    element = element.parentElement;
+  }
+  return null;
+};
+
+// 휠 이벤트 핸들러
+const handleWheel = (e) => {
+  if (isScrolling.value) {
+    e.preventDefault();
+    return;
+  }
+
+  // 스크롤 가능한 내부 요소 찾기
+  const scrollableElement = findScrollableParent(e.target);
+
+  if (scrollableElement) {
+    const { scrollTop, scrollHeight, clientHeight } = scrollableElement;
+    const isAtTop = scrollTop <= 1;
+    const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
+
+    const scrollingDown = e.deltaY > 0;
+    const scrollingUp = e.deltaY < 0;
+
+    // 내부 스크롤이 아직 가능하면 허용 (기본 동작)
+    if ((scrollingDown && !isAtBottom) || (scrollingUp && !isAtTop)) {
+      // 내부 스크롤 시 누적값 리셋
+      accumulatedDelta = 0;
+      return; // 내부 스크롤 허용
+    }
+  }
+
+  // 내부 스크롤이 없거나 끝에 도달했으면 섹션 스크롤
+  e.preventDefault();
+
+  // 스크롤 누적
+  accumulatedDelta += e.deltaY;
+
+  // 리셋 타이머 재설정 (스크롤을 멈추면 누적값 초기화)
+  clearTimeout(scrollResetTimer);
+  scrollResetTimer = setTimeout(() => {
+    accumulatedDelta = 0;
+  }, SCROLL_RESET_DELAY);
+
+  // 임계값 도달 시에만 섹션 이동
+  if (accumulatedDelta >= SCROLL_THRESHOLD) {
+    scrollToSection(currentSectionIndex.value + 1);
+    accumulatedDelta = 0;
+  } else if (accumulatedDelta <= -SCROLL_THRESHOLD) {
+    scrollToSection(currentSectionIndex.value - 1);
+    accumulatedDelta = 0;
+  }
+};
+
+// 키보드 이벤트 핸들러
+const handleKeydown = (e) => {
+  if (isScrolling.value) return;
+
+  if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+    e.preventDefault();
+    scrollToSection(currentSectionIndex.value + 1);
+  } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+    e.preventDefault();
+    scrollToSection(currentSectionIndex.value - 1);
+  } else if (e.key === 'Home') {
+    e.preventDefault();
+    scrollToSection(0);
+  } else if (e.key === 'End') {
+    e.preventDefault();
+    scrollToSection(sectionIds.length - 1);
+  }
+};
+
+// 터치 이벤트 핸들러
+let touchStartY = 0;
+let touchStartElement = null;
+
+const handleTouchStart = (e) => {
+  touchStartY = e.touches[0].clientY;
+  touchStartElement = e.target;
+};
+
+const handleTouchEnd = (e) => {
+  if (isScrolling.value) return;
+
+  const touchEndY = e.changedTouches[0].clientY;
+  const diff = touchStartY - touchEndY;
+
+  // 최소 TOUCH_SWIPE_THRESHOLD 이상 스와이프해야 섹션 이동
+  if (Math.abs(diff) > TOUCH_SWIPE_THRESHOLD) {
+    // 스크롤 가능한 내부 요소 찾기
+    const scrollableElement = findScrollableParent(touchStartElement);
+
+    if (scrollableElement) {
+      const { scrollTop, scrollHeight, clientHeight } = scrollableElement;
+      const isAtTop = scrollTop <= 1;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
+
+      const swipingDown = diff > 0; // 손가락을 위로 올림 = 아래로 스크롤
+      const swipingUp = diff < 0;   // 손가락을 아래로 내림 = 위로 스크롤
+
+      // 내부 스크롤이 아직 가능하면 섹션 스크롤 하지 않음
+      if ((swipingDown && !isAtBottom) || (swipingUp && !isAtTop)) {
+        return; // 내부 스크롤이 자연스럽게 처리됨
+      }
+    }
+
+    // 섹션 스크롤 실행
+    if (diff > 0) {
+      scrollToSection(currentSectionIndex.value + 1);
+    } else {
+      scrollToSection(currentSectionIndex.value - 1);
+    }
+  }
+};
+
+// 동적 뷰포트 높이 계산 (모바일 주소창 대응)
+const updateViewportHeight = () => {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+};
+
 // Smooth scroll implementation
 onMounted(() => {
+  // 뷰포트 높이 초기 설정 및 리사이즈 이벤트 등록
+  updateViewportHeight();
+  window.addEventListener('resize', updateViewportHeight);
+  window.addEventListener('orientationchange', updateViewportHeight);
+
+  // main-container 참조 설정
+  mainContainer.value = document.querySelector('.main-container');
+
+  // 휠 이벤트 리스너 추가
+  if (mainContainer.value) {
+    mainContainer.value.addEventListener('wheel', handleWheel, { passive: false });
+    mainContainer.value.addEventListener('touchstart', handleTouchStart, { passive: true });
+    mainContainer.value.addEventListener('touchend', handleTouchEnd, { passive: true });
+  }
+
+  // 키보드 이벤트 리스너 추가
+  document.addEventListener('keydown', handleKeydown);
+
   // Typing effect
   setInterval(() => {
     currentIndex = (currentIndex + 1) % texts.en.length;
     currentText.value = texts.en[currentIndex];
   }, 3000);
 
-  // Smooth scroll for anchor links
+  // 앵커 링크 클릭 시 섹션 인덱스 업데이트
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        target.scrollIntoView({
-          behavior: 'smooth'
-        });
+      const href = this.getAttribute('href');
+      const targetId = href.replace('#', '');
+      const targetIndex = sectionIds.indexOf(targetId);
+
+      if (targetIndex !== -1) {
+        scrollToSection(targetIndex);
       }
     });
   });
@@ -306,24 +491,24 @@ onMounted(() => {
     observer.observe(section);
   });
 
-  // Add scroll functionality
-  const handleScrollClick = () => {
-    const projectsSection = document.querySelector('#projects');
-    if (projectsSection) {
-      projectsSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
+  // Scroll indicator 클릭 시 다음 섹션으로 이동
   const scrollIndicator = document.querySelector('.scroll-indicator');
   if (scrollIndicator) {
-    scrollIndicator.addEventListener('click', handleScrollClick);
+    scrollIndicator.addEventListener('click', () => {
+      scrollToSection(currentSectionIndex.value + 1);
+    });
   }
 
   // Clean up
   onUnmounted(() => {
-    if (scrollIndicator) {
-      scrollIndicator.removeEventListener('click', handleScrollClick);
+    if (mainContainer.value) {
+      mainContainer.value.removeEventListener('wheel', handleWheel);
+      mainContainer.value.removeEventListener('touchstart', handleTouchStart);
+      mainContainer.value.removeEventListener('touchend', handleTouchEnd);
     }
+    document.removeEventListener('keydown', handleKeydown);
+    window.removeEventListener('resize', updateViewportHeight);
+    window.removeEventListener('orientationchange', updateViewportHeight);
   });
 });
 </script>
@@ -332,16 +517,37 @@ onMounted(() => {
 .main-container {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  /* 동적 뷰포트 높이: dvh > --vh 변수 > vh 순으로 폴백 */
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  height: 100dvh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  /* 스크롤바 숨김 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.main-container::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Opera */
 }
 
 .section {
   position: relative;
+  /* 동적 뷰포트 높이: dvh > --vh 변수 > vh 순으로 폴백 */
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  height: 100dvh;
   min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 0 var(--space-xl);
+  box-sizing: border-box;
+  overflow: hidden; /* 콘텐츠가 넘치면 숨김 */
 }
 
 /* Hero Section */
@@ -552,6 +758,29 @@ onMounted(() => {
   .scroll-indicator {
     bottom: 1.5rem;
   }
+}
+
+/* 콘텐츠가 많은 섹션을 위한 내부 스크롤 컨테이너 */
+.section > .container {
+  max-height: 90%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* 내부 스크롤바 스타일링 */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 255, 218, 0.3) transparent;
+}
+
+.section > .container::-webkit-scrollbar {
+  width: 4px;
+}
+
+.section > .container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.section > .container::-webkit-scrollbar-thumb {
+  background: rgba(100, 255, 218, 0.3);
+  border-radius: 2px;
 }
 
 .expertise-section {
