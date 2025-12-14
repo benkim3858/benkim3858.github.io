@@ -52,8 +52,26 @@ export default defineNuxtConfig({
         { name: 'twitter:image', content: '/logo.png' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/png', href: '/favicon.png' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/logo.png' },
+        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/logo.png' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/logo.png' },
         { rel: 'canonical', href: 'https://evegdev.com/' }
+      ],
+      script: [
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "url": "https://evegdev.com/",
+            "logo": "https://evegdev.com/logo.png",
+            "name": "Ben Kim Portfolio",
+            "sameAs": [
+              "https://github.com/benkim3858"
+            ]
+          })
+        }
       ]
     }
   },
