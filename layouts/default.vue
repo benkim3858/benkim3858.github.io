@@ -52,6 +52,9 @@ const route = useRoute();
 const isMenuOpen = ref(false);
 const isScrolled = ref(false);
 
+// index.vue의 컨테이너 스크롤 값을 useState로 공유받음
+const containerScrollY = useState('containerScrollY', () => 0);
+
 const currentLocale = computed(() => locale.value);
 const availableLocales = computed(() => {
   // 하드코딩된 로케일 배열 사용
@@ -83,13 +86,20 @@ const switchLanguage = (newLocale: string) => {
 };
 
 const handleScroll = () => {
-  // Use a slightly larger buffer or keep 50
-  isScrolled.value = window.scrollY > 50;
+  // window 스크롤 또는 컨테이너 스크롤 중 하나라도 50 이상이면 스크롤된 것으로 처리
+  const windowScrolled = window.scrollY > 50;
+  const containerScrolled = containerScrollY.value > 50;
+  isScrolled.value = windowScrolled || containerScrolled;
 };
 
 // Close menu when route changes
 watch(() => useRoute().path, () => {
   isMenuOpen.value = false;
+});
+
+// 컨테이너 스크롤 값 변경 감지
+watch(containerScrollY, () => {
+  handleScroll();
 });
 
 onMounted(() => {

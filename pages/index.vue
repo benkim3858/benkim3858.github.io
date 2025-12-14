@@ -195,6 +195,9 @@ const currentSectionIndex = ref(0);
 const isScrolling = ref(false);
 const mainContainer = ref(null);
 
+// 컨테이너 스크롤 상태를 레이아웃과 공유 (useState는 컴포넌트 간 전역 상태 공유)
+const containerScrollY = useState('containerScrollY', () => 0);
+
 // 스크롤 민감도 설정 (둔감 설정)
 const SCROLL_THRESHOLD = 350;      // 누적 임계값 (높을수록 덜 민감)
 const SCROLL_RESET_DELAY = 400;    // 스크롤 멈추면 누적값 리셋 (ms)
@@ -431,6 +434,13 @@ const updateViewportHeight = () => {
   document.documentElement.style.setProperty('--vh', `${vh}px`);
 };
 
+// 컨테이너 스크롤 이벤트 핸들러 (레이아웃 헤더용)
+const handleContainerScroll = () => {
+  if (mainContainer.value) {
+    containerScrollY.value = mainContainer.value.scrollTop;
+  }
+};
+
 // Smooth scroll implementation
 onMounted(() => {
   // 뷰포트 높이 초기 설정 및 리사이즈 이벤트 등록
@@ -446,6 +456,7 @@ onMounted(() => {
     mainContainer.value.addEventListener('wheel', handleWheel, { passive: false });
     mainContainer.value.addEventListener('touchstart', handleTouchStart, { passive: true });
     mainContainer.value.addEventListener('touchend', handleTouchEnd, { passive: true });
+    mainContainer.value.addEventListener('scroll', handleContainerScroll, { passive: true });
   }
 
   // 키보드 이벤트 리스너 추가
@@ -505,6 +516,7 @@ onMounted(() => {
       mainContainer.value.removeEventListener('wheel', handleWheel);
       mainContainer.value.removeEventListener('touchstart', handleTouchStart);
       mainContainer.value.removeEventListener('touchend', handleTouchEnd);
+      mainContainer.value.removeEventListener('scroll', handleContainerScroll);
     }
     document.removeEventListener('keydown', handleKeydown);
     window.removeEventListener('resize', updateViewportHeight);
