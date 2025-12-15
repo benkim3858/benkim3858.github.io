@@ -2,8 +2,18 @@
 export default defineNuxtConfig({
   modules: [
     '@nuxtjs/i18n',
-    'nuxt-icon'
+    'nuxt-icon',
+    'nuxt-calendly'
   ],
+
+  // Runtime Config - 환경 변수
+  runtimeConfig: {
+    public: {
+      web3formsKey: process.env.NUXT_PUBLIC_WEB3FORMS_KEY || '',
+      channelPluginKey: process.env.NUXT_PUBLIC_CHANNEL_PLUGIN_KEY || '',
+      calendlyUrl: process.env.NUXT_PUBLIC_CALENDLY_URL || ''
+    }
+  },
 
   // Global CSS - Design System
   css: [

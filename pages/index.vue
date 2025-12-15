@@ -193,24 +193,74 @@
           <div class="contact-info">
             <p>{{ contactText }}</p>
             <div class="contact-details">
-                <p><Icon name="mdi:email" /> contact@evergreen.dev</p>
-                <p><Icon name="mdi:map-marker" /> Seoul, Korea</p>
+              <a :href="`mailto:${contacts.email}`" class="contact-link">
+                <Icon name="mdi:email" /> {{ contacts.email }}
+              </a>
+              <p><Icon name="mdi:map-marker" /> {{ contacts.location }}</p>
+              <p class="response-time">
+                <Icon name="mdi:clock-outline" /> 24시간 이내 회신
+              </p>
             </div>
+
+            <!-- Social Links -->
+            <div class="social-links">
+              <a
+                v-for="link in socialLinks"
+                :key="link.name"
+                :href="link.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                :aria-label="link.name"
+                class="social-link"
+              >
+                <Icon :name="link.icon" />
+              </a>
+            </div>
+
+            <!-- Meeting Scheduler -->
+            <ClientOnly>
+              <MeetingScheduler />
+            </ClientOnly>
           </div>
           <form class="contact-form" @submit.prevent="handleSubmit">
             <div class="form-group">
               <label for="name">Name / Company</label>
-              <input type="text" id="name" v-model="formData.name" required>
+              <input type="text" id="name" v-model="formData.name" required :disabled="isSubmitting">
             </div>
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" id="email" v-model="formData.email" required>
+              <input type="email" id="email" v-model="formData.email" required :disabled="isSubmitting">
+            </div>
+            <div class="form-group">
+              <label for="projectType">Project Type</label>
+              <select id="projectType" v-model="formData.projectType" :disabled="isSubmitting">
+                <option value="">선택해주세요</option>
+                <option value="web">웹 개발</option>
+                <option value="mobile">모바일 앱</option>
+                <option value="fullstack">풀스택 서비스</option>
+                <option value="consulting">기술 컨설팅</option>
+                <option value="other">기타</option>
+              </select>
             </div>
             <div class="form-group">
               <label for="message">Message</label>
-              <textarea id="message" v-model="formData.message" required></textarea>
+              <textarea id="message" v-model="formData.message" required :disabled="isSubmitting"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Send Message</button>
+            <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
+              <span v-if="isSubmitting">전송 중...</span>
+              <span v-else>프로젝트 상담 요청</span>
+            </button>
+
+            <!-- Submit Result Message -->
+            <Transition name="fade">
+              <div
+                v-if="submitResult"
+                :class="['submit-result', submitResult.success ? 'success' : 'error']"
+              >
+                <Icon :name="submitResult.success ? 'mdi:check-circle' : 'mdi:alert-circle'" />
+                {{ submitResult.message }}
+              </div>
+            </Transition>
           </form>
         </div>
       </div>
@@ -300,19 +350,32 @@ const testimonials = ref([
 ]);
 
 const contactText = ref(`새로운 프로젝트 논의나 기술 상담이 필요하시다면 언제든 연락주세요. 귀사의 비즈니스에 최적화된 솔루션을 제안해 드립니다.`);
+
+// Contact Form with Web3Forms
+const { isSubmitting, submitResult, submitForm, resetForm } = useContactForm();
+const { contacts, socialLinks } = useContactInfo();
+
 const formData = ref({
   name: '',
   email: '',
-  message: ''
+  message: '',
+  projectType: ''
 });
 
 // Projects Data from Composable
 const { projects } = useProjects();
 
-// Methods
+// Form submission handler
 const handleSubmit = async () => {
-  // Implement form submission logic
-  console.log('Form submitted:', formData.value);
+  await submitForm(formData.value);
+  if (submitResult.value?.success) {
+    // Reset form on success
+    formData.value = { name: '', email: '', message: '', projectType: '' };
+    // Auto-hide success message after 5 seconds
+    setTimeout(() => {
+      resetForm();
+    }, 5000);
+  }
 };
 
 // 섹션으로 스크롤하는 함수
@@ -591,7 +654,8 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 var(--space-xl);
+  padding: 100px var(--space-xl);
+  scroll-margin-top: 120px;
   box-sizing: border-box;
   overflow: hidden; /* 콘텐츠가 넘치면 숨김 */
 }
@@ -1098,5 +1162,213 @@ onMounted(() => {
   color: #ffc107;
   font-size: 0.9rem;
   display: flex;
+}
+
+/* Contact Section Styles */
+.contact-container {
+  gap: 2rem;
+}
+
+.contact-info {
+  background: rgba(11, 16, 33, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(74, 243, 255, 0.1);
+  border-radius: 24px;
+  padding: 2.5rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.contact-info:hover {
+  border-color: rgba(74, 243, 255, 0.3);
+  transform: translateY(-5px);
+}
+
+.contact-details {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contact-details p, 
+.contact-details a {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--text-color);
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+.contact-details p .iconify,
+.contact-details a .iconify {
+  color: var(--accent-color);
+  font-size: 1.2rem;
+}
+
+.contact-link:hover {
+  color: var(--accent-color);
+}
+
+.response-time {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.social-link:hover {
+  background: rgba(74, 243, 255, 0.1);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.contact-form {
+  background: rgba(11, 16, 33, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  height: 100%;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  color: var(--text-color-light);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-left: 0.2rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: var(--text-color-light);
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  background: rgba(74, 243, 255, 0.05);
+  box-shadow: 0 0 0 4px rgba(74, 243, 255, 0.1);
+}
+
+.form-group select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364ffda' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.2rem center;
+}
+
+.form-group select option {
+  background: #0b1021;
+  color: var(--text-color-light);
+  padding: 10px;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.contact-form .btn-primary {
+  margin-top: 1rem;
+  background: var(--accent-color);
+  color: var(--bg-color);
+  border: none;
+  font-weight: 700;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+}
+
+.contact-form .btn-primary:hover {
+  background: var(--accent-color);
+  transform: translateY(-3px);
+  box-shadow: 0 0 30px rgba(74, 243, 255, 0.4);
+}
+
+.submit-result {
+  padding: 1rem;
+  border-radius: 12px;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.95rem;
+}
+
+.submit-result.success {
+  background: rgba(74, 243, 255, 0.1);
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
+}
+
+.submit-result.error {
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid #ff6b6b;
+  color: #ff6b6b;
+}
+
+@media (max-width: 768px) {
+  .contact-info, .contact-form {
+    padding: 1.5rem;
+  }
+}
+
+/* Fade transition */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

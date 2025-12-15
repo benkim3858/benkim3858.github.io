@@ -1,63 +1,166 @@
 <template>
   <section class="section">
     <div class="container">
-      <h2 class="section-title text-center">Get In Touch</h2>
-      <div class="contact-container grid grid-1 grid-2-md">
-        <div class="contact-info">
-          <p>I'm currently open for new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!</p>
-          <div class="social-links">
-            <a href="https://github.com/yourusername" target="_blank">
-              <Icon name="mdi:github" />
+      <h2 class="section-title text-center">프로젝트 문의</h2>
+      <p class="section-subtitle text-center">
+        새로운 프로젝트나 협업에 대해 이야기해 보세요
+      </p>
+
+      <div class="contact-container">
+        <!-- Contact Info & Options -->
+        <div class="contact-sidebar">
+          <div class="contact-card">
+            <h3 class="card-title">
+              <Icon name="mdi:email-outline" />
+              이메일 문의
+            </h3>
+            <p class="card-desc">일반적인 문의는 이메일로 보내주세요.</p>
+            <a :href="`mailto:${contacts.email}`" class="contact-link">
+              {{ contacts.email }}
             </a>
-            <a href="https://linkedin.com/in/yourusername" target="_blank">
-              <Icon name="mdi:linkedin" />
-            </a>
-            <a href="https://twitter.com/yourusername" target="_blank">
-              <Icon name="mdi:twitter" />
-            </a>
+            <span class="response-time">
+              <Icon name="mdi:clock-outline" />
+              평균 응답 시간: 24시간 이내
+            </span>
+          </div>
+
+          <div class="contact-card">
+            <h3 class="card-title">
+              <Icon name="mdi:chat-outline" />
+              실시간 채팅
+            </h3>
+            <p class="card-desc">채널톡으로 빠르게 상담받으세요.</p>
+            <button @click="openChannelTalk" class="btn btn-chat">
+              <Icon name="mdi:message-text" />
+              채팅 시작하기
+            </button>
+          </div>
+
+          <div class="contact-card">
+            <MeetingScheduler />
+          </div>
+
+          <div class="contact-card">
+            <h3 class="card-title">
+              <Icon name="mdi:link-variant" />
+              소셜 링크
+            </h3>
+            <div class="social-links">
+              <a
+                v-for="link in socialLinks"
+                :key="link.name"
+                :href="link.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-link"
+                :title="link.name"
+              >
+                <Icon :name="link.icon" />
+              </a>
+            </div>
           </div>
         </div>
-        <form class="contact-form" @submit.prevent="handleSubmit">
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input 
-              type="text" 
-              id="name" 
-              v-model="formData.name" 
-              required
+
+        <!-- Contact Form -->
+        <div class="contact-form-wrapper">
+          <h3 class="form-title">프로젝트 문의하기</h3>
+          <form class="contact-form" @submit.prevent="handleSubmit">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">이름 *</label>
+                <input
+                  type="text"
+                  id="name"
+                  v-model="formData.name"
+                  placeholder="홍길동"
+                  required
+                >
+              </div>
+              <div class="form-group">
+                <label for="email">이메일 *</label>
+                <input
+                  type="email"
+                  id="email"
+                  v-model="formData.email"
+                  placeholder="example@company.com"
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="projectType">프로젝트 유형</label>
+              <select id="projectType" v-model="formData.projectType">
+                <option value="">선택해주세요</option>
+                <option value="web">웹 애플리케이션</option>
+                <option value="mobile">모바일 앱</option>
+                <option value="ecommerce">이커머스</option>
+                <option value="consulting">기술 컨설팅</option>
+                <option value="maintenance">유지보수</option>
+                <option value="other">기타</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="budget">예상 예산</label>
+              <select id="budget" v-model="formData.budget">
+                <option value="">선택해주세요</option>
+                <option value="small">500만원 미만</option>
+                <option value="medium">500만원 ~ 2,000만원</option>
+                <option value="large">2,000만원 ~ 5,000만원</option>
+                <option value="enterprise">5,000만원 이상</option>
+                <option value="discuss">협의 필요</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="message">프로젝트 설명 *</label>
+              <textarea
+                id="message"
+                v-model="formData.message"
+                placeholder="프로젝트에 대해 자세히 알려주세요. 목표, 기능, 일정 등을 포함해주시면 더 정확한 상담이 가능합니다."
+                rows="6"
+                required
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              class="submit-btn"
+              :disabled="isSubmitting"
             >
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input 
-              type="email" 
-              id="email" 
-              v-model="formData.email" 
-              required
-            >
-          </div>
-          <div class="form-group">
-            <label for="message">Message</label>
-            <textarea 
-              id="message" 
-              v-model="formData.message" 
-              required
-            ></textarea>
-          </div>
-          <button type="submit" class="submit-btn">Send Message</button>
-        </form>
+              <Icon v-if="isSubmitting" name="mdi:loading" class="spin" />
+              <Icon v-else name="mdi:send" />
+              {{ isSubmitting ? '전송 중...' : '문의하기' }}
+            </button>
+
+            <Transition name="fade">
+              <div
+                v-if="submitResult"
+                class="submit-result"
+                :class="{ success: submitResult.success, error: !submitResult.success }"
+              >
+                <Icon :name="submitResult.success ? 'mdi:check-circle' : 'mdi:alert-circle'" />
+                {{ submitResult.message }}
+              </div>
+            </Transition>
+          </form>
+        </div>
       </div>
     </div>
   </section>
 </template>
 
-<script setup>
-// SEO 메타태그 설정
+<script setup lang="ts">
+const { contacts, socialLinks } = useContactInfo()
+const { isSubmitting, submitResult, submitForm, resetForm } = useContactForm()
+const { $channelTalk } = useNuxtApp()
+
 useSeoMeta({
-  title: 'Contact | Ben Kim - Full Stack Developer',
-  description: 'Get in touch with Ben Kim for web development projects, collaborations, or job opportunities. Available for freelance and full-time positions.',
-  ogTitle: 'Contact Ben Kim | Full Stack Developer',
-  ogDescription: 'Get in touch for web development projects and collaborations.',
+  title: 'Contact | Evergreen Dev - 프로젝트 문의',
+  description: '웹/앱 개발 프로젝트 문의, 기술 컨설팅, 협업 제안을 받습니다. 채널톡, 이메일, 화상 미팅으로 편하게 상담하세요.',
+  ogTitle: 'Contact | Evergreen Dev',
+  ogDescription: '프로젝트 문의 및 협업 제안',
   ogImage: '/logo.png',
   twitterCard: 'summary_large_image',
 })
@@ -65,54 +168,267 @@ useSeoMeta({
 const formData = ref({
   name: '',
   email: '',
-  message: ''
-});
+  message: '',
+  projectType: '',
+  budget: ''
+})
 
 const handleSubmit = async () => {
-  // Implement your form submission logic here
-  console.log('Form submitted:', formData.value);
-};
+  const result = await submitForm({
+    name: formData.value.name,
+    email: formData.value.email,
+    message: `[프로젝트 유형: ${formData.value.projectType || '미선택'}]
+[예상 예산: ${formData.value.budget || '미선택'}]
+
+${formData.value.message}`,
+    projectType: formData.value.projectType
+  })
+
+  if (result.success) {
+    formData.value = {
+      name: '',
+      email: '',
+      message: '',
+      projectType: '',
+      budget: ''
+    }
+  }
+}
+
+const openChannelTalk = () => {
+  if ($channelTalk?.isInitialized) {
+    $channelTalk.show()
+  } else {
+    window.open('mailto:' + contacts.email, '_blank')
+  }
+}
 </script>
 
 <style scoped>
-.contact-container {
-  max-width: var(--container-md);
-  margin: 0 auto;
+.section {
+  padding: 8rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle background accent for the section */
+.section::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(74, 243, 255, 0.05) 0%, transparent 70%);
+  z-index: -1;
+  pointer-events: none;
 }
 
 .section-title {
-  font-size: 2.5rem;
-  color: #fff;
-  text-align: center;
-  margin-bottom: 3rem;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  color: var(--text-color-light);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  text-shadow: 0 0 20px rgba(100, 255, 218, 0.1);
 }
 
-.contact-info {
+.section-subtitle {
+  color: var(--text-color);
+  opacity: 0.8;
+  margin-bottom: 4rem;
+  font-size: 1.1rem;
+}
+
+.contact-container {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.contact-sidebar {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 1.5rem;
 }
 
-.contact-info p {
+.contact-card {
+  background: rgba(11, 16, 33, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(74, 243, 255, 0.1);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  animation: slideInLeft 0.6s ease backwards;
+}
+
+.contact-card:nth-child(1) { animation-delay: 0.1s; }
+.contact-card:nth-child(2) { animation-delay: 0.2s; }
+.contact-card:nth-child(3) { animation-delay: 0.3s; }
+.contact-card:nth-child(4) { animation-delay: 0.4s; }
+
+.contact-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(74, 243, 255, 0.3);
+  box-shadow: 0 10px 30px -10px rgba(74, 243, 255, 0.15);
+}
+
+.contact-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+  transform: translateX(-100%);
+  transition: 0.5s;
+}
+
+.contact-card:hover::after {
+  transform: translateX(100%);
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--accent-color);
   font-size: 1.1rem;
-  line-height: 1.8;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.card-desc {
+  color: var(--text-color);
+  opacity: 0.8;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-color-light);
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.contact-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent-color);
+  transition: width 0.3s ease;
+}
+
+.contact-link:hover {
+  color: var(--accent-color);
+}
+
+.contact-link:hover::after {
+  width: 100%;
+}
+
+.response-time {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-color);
+  opacity: 0.6;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.btn-chat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(74, 243, 255, 0.1);
+  border: 1px solid rgba(74, 243, 255, 0.3);
+  border-radius: 8px;
+  color: var(--accent-color);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  justify-content: center;
+}
+
+.btn-chat:hover {
+  background: rgba(74, 243, 255, 0.2);
+  box-shadow: 0 0 20px rgba(74, 243, 255, 0.2);
+  border-color: var(--accent-color);
 }
 
 .social-links {
   display: flex;
-  gap: 1.5rem;
-  margin-top: 2rem;
+  gap: 1rem;
 }
 
-.social-links a {
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--text-color);
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   transition: all 0.3s ease;
 }
 
-.social-links a:hover {
+.social-link:hover {
+  background: rgba(74, 243, 255, 0.1);
+  border-color: var(--accent-color);
   color: var(--accent-color);
   transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.contact-form-wrapper {
+  background: rgba(11, 16, 33, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 40px -10px rgba(2, 12, 27, 0.5);
+  animation: slideInRight 0.8s ease backwards 0.2s;
+}
+
+.form-title {
+  color: var(--text-color-light);
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.form-title::before {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 24px;
+  background: var(--accent-color);
+  border-radius: 2px;
+  box-shadow: 0 0 10px var(--accent-color);
 }
 
 .contact-form {
@@ -121,58 +437,215 @@ const handleSubmit = async () => {
   gap: 1.5rem;
 }
 
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  position: relative;
 }
 
 .form-group label {
-  color: #fff;
+  color: var(--text-color-light);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-left: 0.2rem;
 }
 
 .form-group input,
-.form-group textarea {
-  padding: 0.8rem;
-  background: rgba(255, 255, 255, 0.05);
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  background: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  color: #fff;
+  border-radius: 12px;
+  color: var(--text-color-light);
+  font-size: 0.95rem;
   font-family: inherit;
-}
-
-.form-group textarea {
-  height: 150px;
-  resize: vertical;
-}
-
-.submit-btn {
-  background: var(--accent-color);
-  color: var(--bg-color);
-  padding: 1rem;
-  border: none;
-  border-radius: 4px;
-  font-weight: 500;
-  cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.submit-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(100, 255, 218, 0.2);
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  background: rgba(74, 243, 255, 0.05);
+  box-shadow: 0 0 0 4px rgba(74, 243, 255, 0.1);
 }
 
-@media (max-width: 768px) {
-  .contact-info {
-    text-align: center;
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--text-color);
+  opacity: 0.3;
+}
+
+.form-group select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364ffda' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.2rem center;
+}
+
+.form-group select option {
+  background: #0b1021;
+  color: var(--text-color-light);
+  padding: 10px;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 150px;
+}
+
+.submit-btn {
+  margin-top: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: var(--accent-color);
+  color: var(--bg-color);
+  padding: 1.1rem 2.5rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  align-self: flex-start;
+}
+
+.submit-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: 0.5s;
+}
+
+.submit-btn:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 0 30px rgba(74, 243, 255, 0.4);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #4a5568;
+}
+
+.submit-result {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.95rem;
+}
+
+.submit-result.success {
+  background: rgba(74, 243, 255, 0.1);
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
+}
+
+.submit-result.error {
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid #ff6b6b;
+  color: #ff6b6b;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+@media (max-width: 900px) {
+  .contact-container {
+    grid-template-columns: 1fr;
+    gap: 3rem;
   }
 
-  .social-links {
-    justify-content: center;
+  .contact-sidebar {
+    order: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  
+  .contact-card {
+    height: 100%;
   }
 
-  .contact-form {
-    margin-top: var(--space-xl);
+  .contact-form-wrapper {
+    order: 1;
+    padding: 2rem;
   }
 }
-</style> 
+
+@media (max-width: 600px) {
+  .section {
+    padding: 6rem 0;
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+  }
+
+  .contact-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .submit-btn {
+    width: 100%;
+  }
+}
+</style>
+```
