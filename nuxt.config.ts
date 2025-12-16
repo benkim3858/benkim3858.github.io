@@ -67,7 +67,11 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/logo.png' },
         { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/logo.png' },
         { rel: 'apple-touch-icon', sizes: '180x180', href: '/logo.png' },
-        { rel: 'canonical', href: 'https://evegdev.com/' }
+        { rel: 'canonical', href: 'https://evegdev.com/' },
+        // Fonts - Pretendard (Variable)
+        { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css', crossorigin: 'anonymous' },
+        // Fonts - Google (Space Mono for Logo, Fira Code for Monospace)
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap', crossorigin: 'anonymous' }
       ],
       script: [
         {

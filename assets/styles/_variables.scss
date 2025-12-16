@@ -21,12 +21,12 @@
   --container-xl: 1280px;
 
   // Typography
-  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-sans: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
   --font-mono: 'Fira Code', monospace;
-  
+
   // Z-index
   --z-background: -1;
   --z-default: 1;
   --z-overlay: 10;
   --z-modal: 20;
-} 
+}

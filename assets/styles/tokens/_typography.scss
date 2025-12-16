@@ -18,7 +18,7 @@
   // -------------------------
   // Font Families (from _variables.scss)
   // -------------------------
-  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-sans: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
   --font-mono: 'Fira Code', monospace;
 }
 
@@ -32,7 +32,7 @@ $font-size-lg: 1.5rem;
 $font-size-xl: 2.5rem;
 $font-size-xxl: 4rem;
 
-$font-sans: 'Inter', system-ui, sans-serif;
+$font-sans: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
 $font-mono: 'Fira Code', monospace;
 
 // Font size map for generating utility classes
