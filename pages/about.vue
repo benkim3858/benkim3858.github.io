@@ -69,7 +69,7 @@
 </template>
 
 <script setup>
-const { t, tm } = useI18n();
+const { t, tm, rt } = useI18n();
 
 // SEO 메타태그 설정 (검색 최적화)
 useSeoMeta({
@@ -94,17 +94,13 @@ const achievements = computed(() => [
 const testimonials = computed(() => {
   try {
     const rawItems = tm('about.testimonials.items');
-    if (rawItems && typeof rawItems === 'object') {
-      // Use JSON.parse/stringify to break Vue reactivity and get plain values
-      const items = JSON.parse(JSON.stringify(rawItems));
-      if (Array.isArray(items)) {
-        return items.map((item) => ({
-          content: item.content || '',
-          author: item.author || '',
-          role: item.role || '',
-          rating: 5
-        }));
-      }
+    if (rawItems && Array.isArray(rawItems)) {
+      return rawItems.map((item) => ({
+        content: rt(item.content),
+        author: rt(item.author),
+        role: rt(item.role),
+        rating: 5
+      }));
     }
   } catch (e) {
     console.warn('Failed to load testimonials', e);
